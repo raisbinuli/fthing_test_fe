@@ -1,12 +1,12 @@
 <template>
     <div class="row mt-5">
-
         <div class="col-lg-12">
             <AlertMessageDisplay
                 :showAlertMsg="showAlertMsg"                
                 :rtnMessages="rtnMessages"
+                :clsAlert="clsAlert"
+                :rtnMessagesStr="rtnMessagesStr"
             />
-            
             <b-form @submit="onSubmit" >
                 <b-form-group
                     id="input-group-1"
@@ -58,7 +58,7 @@
                 ></b-form-textarea>
                 
                 <b-button type="submit" class="mr-2" variant="primary" :disabled="disabled">Submit</b-button>
-                <b-button type="reset" variant="danger">Reset</b-button>
+                
             </b-form>
             
         </div>
@@ -74,23 +74,25 @@
         },
         data(){
             return{
-                'name': '',
-                'email': '',
-                'password': '',
-                'gender': '',
-                'is_married':'',
-                'address': '',
+                name: '',
+                email: '',
+                password: '',
+                gender: '',
+                is_married:'',
+                address: '',
+                clsAlert:'',
                 disabled: false,
                 showAlertMsg: false,
-                rtnMessages: {}
+                rtnMessages: {},
+                rtnMessagesStr: '',
 
             }
         },
         name:'Create',
         methods:{
-            onSubmit(e){
+            async onSubmit(e){
                 e.preventDefault();
-                
+                this.clsAlert = '';
                 this.showAlertMsg = false;
                 this.disabled = true
                 const data = new FormData()
@@ -105,16 +107,19 @@
                     config: { headers: { 'Content-Type': 'application/json' } }
                 })
                 .then((response) => {
-                    
+                    this.clsAlert = 'alert-success'
                     this.disabled = false
-                    console.log(response.status)
+                    this.showAlertMsg = true                    
+                    this.rtnMessagesStr = response.data.status.message
                 }).catch(err => {
-                    
-                    console.log(err.response)
-                    if(err.response){                        
+                    if(err.response){  
+                        if(err.response.status == 404)     
+                            this.rtnMessagesStr = err.response.data.status.message
+                        else
+                            this.rtnMessages = err.response.data.status.message   
+                        this.clsAlert = 'alert-danger'                   
                         this.disabled = false
                         this.showAlertMsg = true
-                        this.rtnMessages = err.response.data.status.message
                     }
                     
                 })   

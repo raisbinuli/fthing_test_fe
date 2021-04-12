@@ -11,6 +11,19 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.config.productionTip = false
 Vue.use(BootstrapVue,IconsPlugin).use(VueAxios, axios)
+Vue.mixin({
+  methods:{
+    makeToast(variant) {
+      
+      this.$bvToast.toast(this.toastMessage, {
+        title: `Variant ${variant || 'default'}`,
+        variant: variant,
+        solid: true
+      })
+    }
+  }
+  
+})
 
 
 new Vue({
