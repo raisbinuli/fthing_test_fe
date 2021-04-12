@@ -1,24 +1,7 @@
 # fthing_test_fe
 
-## Project setup
-```
-npm install
-```
+## Source for frontend customer
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## How to install
+- Run "npm install" in root folder 
+- Please make sure this application domain is the same as inside the file config\cors.php for allowed_origins attributes (backend)
